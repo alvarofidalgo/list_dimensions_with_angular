@@ -27,8 +27,8 @@ module.exports = function(config) {
        './src/dimension/dimensions_model.js',
        './src/dimension/dimensions_view.js',  
        './src/dimension/dimensions_controller.js', 
-       './src/dimension/module.js',           
-       './test/dimension-spect/dataResponse.js',
+       './src/dimension/module.js',   
+       './test/dimension-spect/store_inserter.js',        
        './test/dimension-spect/*.js'
     ],
 

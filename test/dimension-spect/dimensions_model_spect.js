@@ -1,23 +1,25 @@
 describe('Model to dimensions',function(){
-	var dimensionsModel,store,callback,data;
-	    
-	    beforeEach(module('dimensions'));
 
-	      beforeEach(inject(function(_store_,_dimensionsModel_) {
-	      data = dataGenerator();
-          store = _store_;
+	var dimensionsModel,callback,storeInserter;
+	    
+	beforeEach(module('dimensions'));
+
+    beforeEach(inject(function(_store_,_dimensionsModel_) {
+	      
+          storeInserter = store_inserter (_store_);
           dimensionsModel = _dimensionsModel_;
           callback= sinon.spy();
+
         }));
     context('when list elements ',function(){
 	    it ('when data in store',function(){
-             var result =generateDataResult("modify");
-	             store.put(data);
+             
+	         var dataInserted = storeInserter.insertAny(),
+	             result =storeInserter.modelLastInserter();
 	             dimensionsModel.forEach(callback);
 	             expect(callback).have.been.called;
-	             expect(callback.args[0][0].toDTO()).to.deep.equal(new DimensionItem(data).toDTO());
-	             
-	             store.flush();
+	             expect(callback.args[0][0].toDTO()).to.deep.equal(new DimensionItem(dataInserted).toDTO());
+	             storeInserter.restoreStore();
 	    });
 
 	    it ('when no in store',function(){     
@@ -27,31 +29,33 @@ describe('Model to dimensions',function(){
 	    });
 	   
 	   	it ('when two data in store',function(){   
-	   	    store.put(data);
-	   	    store.put(data);  
+	   	    storeInserter.insertAny();
+	   	    storeInserter.insertAny();
             dimensionsModel.forEach(callback);
             expect(callback).have.been.callCount(2);
+            storeInserter.restoreStore();
 
 	    });
 	   });
 
     context ('when insert element ',function(){
     	it ('insert one description ',function(){
-	        dimensionsModel.insert(data.description,callback);
-	        expect(callback).have.been.called;
-	        expect(callback.args[0][0].toDTO()).to.deep.equal(new DimensionItem(data).toDTO());
-	        store.flush();
+    		var dataInsert = {description:'desc',value:'1'};
+		        dimensionsModel.insert(dataInsert.description,callback);
+		        expect(callback).have.been.called;
+		        expect(callback.args[0][0].toDTO()).to.deep.equal(new DimensionItem(dataInsert).toDTO());
+		        dimensionsModel.delete(dataInsert.value,callback);
         })
     });
 
     context('when modfiy element ',function(){
     	it('modify item ',function(){
-    		var element = {value:'1',description:'desc'};
-    		store.put(data);  
-	    	 dimensionsModel.modify(element,callback);
-	    	 expect(callback).have.been.called;
-	    	 expect(callback.args[0][0].toDTO()).to.deep.equal(new DimensionItem(element).toDTO());
-	        store.flush();
+    	  var dataModify =  storeInserter.insertAny();
+	    	  dimensionsModel.modify(dataModify,callback);
+	    	  expect(callback).have.been.called;
+	    	  expect(callback.args[0][0].toDTO()).to.deep.equal(new DimensionItem(dataModify).toDTO());
+	          storeInserter.restoreStore();
+
     	 })
     });
 

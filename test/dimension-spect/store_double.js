@@ -1,7 +1,6 @@
 function Store(){
 
-      var _elements = [/*{value:'1',description:'PROBANDO1'},
-                       {value:'2',description:'PROBANDO2'}*/];
+      var _elements = [];
 
            return {get:function(callback){
 
@@ -30,15 +29,7 @@ function Store(){
                       for (;_elements.length>0;_elements.pop());
                       for (var index=0;index<newDimensions.length;_elements.push(newDimensions[index++]));
                       callback();
-                   },
-                   //METHODS INSERTED TO TEST
-                   put:function(data){
-                       _elements.push(data);
-                   },
-                   flush:function(){
-                   	_elements = [];
                    }
-
            }
 
 }

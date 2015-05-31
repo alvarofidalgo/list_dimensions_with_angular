@@ -3,8 +3,7 @@ function DimensionItem(item){
 	this.toDTO = function(){
 		return {id:item.value,
 		        description:item.description,
-		        type:"modify",
-		        enabledDescription:false
+		        type:"modify"
 		        }
 	}
 }

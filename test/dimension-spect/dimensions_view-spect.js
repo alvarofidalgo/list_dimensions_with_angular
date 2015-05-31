@@ -1,20 +1,15 @@
 describe('Dimensions view',function(){
-	 var dimensionsView,viewModel,callback;
+	 var dimensionsView,viewModel,callback,storeInserter;
 	    beforeEach(module('dimensions'));
 
 	    beforeEach(inject(function(_dimensionsView_,_viewModel_) {
+           storeInserter = store_inserter();
            dimensionsView = _dimensionsView_;
            viewModel = _viewModel_;
            viewModel.clearInsertDescription = sinon.stub();
            callback=sinon.spy();
         }));
 
-
-
-	    it ('description insert will can delete',function(){
-               dimensionsView.clearInsertDescription();
-               expect(viewModel.clearInsertDescription).have.been.called;
-	    });
     function initWidgets(widget1,widget2){          
            widget1.buttomModify = sinon.spy();
            widget1.descriptionText = sinon.spy();
@@ -28,6 +23,14 @@ describe('Dimensions view',function(){
            dimensionsView.dimensionsItems.push(widget1);
            dimensionsView.dimensionsItems.push(widget2);     
     }
+
+   context('delete descriptions ',function(){
+
+	    it ('description insert will can delete',function(){
+               dimensionsView.clearInsertDescription();
+               expect(viewModel.clearInsertDescription).have.been.called;
+	    });
+    })
 
     context('when modify operation ',function(){
      var widget1,widget2,callbackModify;
@@ -62,17 +65,13 @@ describe('Dimensions view',function(){
   
      var callbackModify,callbackDelete; 
       beforeEach(function(){
-           callbackModify=function(){
-               return "modify";
-           }
-           callbackDelete = function(){
-
-           }
+           callbackModify=sinon.spy();
+           callbackDelete = sinon.spy();
 
       });
 
       it ('New items will can show',function(){
-        var item = generateDataResult("modify");
+        var item = storeInserter.anyModel();
 
             dimensionsView.showDimensionItem(item,callbackModify,callbackDelete);
             expect(dimensionsView.dimensionsItems.length).to.be.equal(1);
@@ -81,8 +80,8 @@ describe('Dimensions view',function(){
       });
 
       it( ' Only insert elemenents with distinct id ',function(){
-        var itemModify = generateDataResult("modify"),
-            itemSave = generateDataResult("save");
+        var itemModify = storeInserter.anyModel();
+            itemSave = storeInserter.anyModel('save');
             dimensionsView.showDimensionItem(itemModify);
             dimensionsView.showDimensionItem(itemSave);
 
