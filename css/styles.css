@@ -1,0 +1,22 @@
+h3{
+	margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+article{
+	margin-left: auto;
+    margin-right: auto;
+    width: 20%;	
+}
+
+ul {
+	padding-top:1%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35%;	
+    list-style-type: none;
+}
+
+li { display: inline; }
+

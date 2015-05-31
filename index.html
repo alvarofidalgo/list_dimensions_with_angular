@@ -1,0 +1,60 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> 
+ 
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-route.js"></script>
+ 
+  <script src="test/dimension-spect/store_double.js"></script>
+  <script src="src/dimension/states_config.js"></script>
+  <script src="src/dimension/ViewModel.js"></script>
+  <script src="src/dimension/dimensions_model.js"></script>   
+  <script src="src/dimension/dimensions_view.js"></script>    
+  <script src="src/dimension/dimensions_controller.js"></script>   
+  <script src="src/dimension/module.js"></script>  
+ 
+  <script src="src/app.js"></script> 
+
+</head>
+<body  ng-app="ExampleList" ng-controller="dimensions_controller as controller">
+
+   <h3>Dimension List with Angular</h3>
+   <article >
+   	  <input type="text" placeholder="insert description" ng-model="controller.descriptionInsert"> 
+   	  <button type="button" ng-click="controller.insertDescription()"> 
+   	  	<span class="glyphicon glyphicon-edit"> </span>
+      </button>
+   </article>
+   <ul>
+   	  <li>
+   	  	<span>ID</span> 
+   	  </li>
+   	  <li>
+   	  	<span>DESCRIPTION</span>
+   	  </li>
+   </ul>
+
+   <ul ng-repeat="dimensionItem in controller.dimensionsItems">
+   	 <li>
+   	 	<span>{{ dimensionItem.id }}<span>
+   	 <li>
+     <li>
+     	<input type="text" ng-model="dimensionItem.description" ng-readonly="dimensionItem.readOnly"/>
+     <li>
+     <li>
+     	<button  ng-click="dimensionItem.delete()" class="glyphicon glyphicon-remove"/>
+     </li>
+      <li>
+     	<button ng-click="dimensionItem.modify()" ng-class="dimensionItem.class"/>						
+     </li>
+   <ul>
+
+</body>
+
+</html>
