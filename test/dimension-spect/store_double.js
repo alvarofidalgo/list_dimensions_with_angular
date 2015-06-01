@@ -1,34 +1,43 @@
 function Store(){
 
-      var _elements = [];
-
-           return {get:function(callback){
-
-                      for (var index=0;index<_elements.length;index++)
-                      	  callback(_elements[index]);
+           return {elements:[],
+                   get:function(callback){
+                    var that=this;
+                     setTimeout(function(){
+                      for (var index=0;index<that.elements.length;index++)
+                      	  callback(that.elements[index]);
+                      },1);
                    },
                    insert:function(description,callback){
-                    var data = {value:''.concat(_elements.length+1),description:description};
-                        _elements.push(data);
-                        callback(data);
+                    var that=this,
+                        data = {value:''.concat(that.elements.length+1),description:description};
+                        setTimeout(function(){
+                           that.elements.push(data);
+                            callback(data);
+                          },1);
                    },
                    modify:function(item,callback){
-                    var pos =0;
-                      for (var i=0;i<_elements.length;i++)
-                        if (_elements[i].value===item.value){
-                             _elements[i]=item;
+                    var pos =0,that=this;
+                    setTimeout(function(){
+                      for (var i=0;i<that.elements.length;i++)
+                        if (that.elements[i].value===item.value){
+                             that.elements[i]=item;
                              pos=i;
                           }
-                      callback(_elements[pos]);
+                      callback(that.elements[pos]);
+                    },1);
                    },
                    delete:function(id,callback){
-
-                      var newDimensions = _elements.filter(function(element){
+                     var that=this;
+                     setTimeout(function(){
+                        newDimensions = that.elements.filter(function(element){
                                return element.value!=id
                             });
-                      for (;_elements.length>0;_elements.pop());
-                      for (var index=0;index<newDimensions.length;_elements.push(newDimensions[index++]));
+                      for (;that.elements.length>0;that.elements.pop());
+                      for (var index=0;index<newDimensions.length;that.elements.push(newDimensions[index++]));
                       callback();
+                    },1);
+
                    }
            }
 

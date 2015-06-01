@@ -1,7 +1,7 @@
 
 describe(' Modify dimension ', function () {
-  //TODO : EL STORE Y EL DATA ME LOS VOY A QUITAR DE UN PLUMAZO
-var dimensionController,dimensionView,dimensionsModel,storeInserter;
+
+var dimensionController,dimensionView,dimensionsModel,storeInserter,clock;
   beforeEach(module('dimensions'));
   
   beforeEach(inject(function(_store_,_dimensionsView_,_dimensionsModel_) {
@@ -18,60 +18,65 @@ var dimensionController,dimensionView,dimensionsModel,storeInserter;
           sinon.spy(dimensionsModel,'insert');
           sinon.spy(dimensionsModel,'modify');
           sinon.spy(dimensionsModel,'delete');
+          clock = sinon.useFakeTimers(); 
   }));
 
   beforeEach(inject(function ($injector){
           var controller = $injector.get('$controller');
-             dimensionController = function(){
-                    return controller('dimensions_controller',
+             ctrl = controller('dimensions_controller',
                               { 
                                 'dimensionsView':dimensionView,
                                  'dimensionsModel': dimensionsModel                       
                               });
-                  }
-          
           })); 
 
   context(' When init aplication ',function(){
 
-      it ('when have data in store ',function(){
+   
+      it (' And exist Data in store ',function(){
             storeInserter.insertAny();
-        var ctrl= dimensionController();
+            ctrl.start();
+             clock.tick(10);
             expect(dimensionsModel.forEach).have.been.called;
             expect(dimensionView.showDimensionItem).have.been.calledWith(storeInserter.modelLastInserter(),
                                                                          ctrl.prepareToModifyDescription);
             storeInserter.restoreStore();
       });
 
-     it ('when no data in store ',function(){
-        dimensionController();
+     it (' And not exist data in store ',function(){
+        ctrl.start();
+        clock.tick(10);
         expect(dimensionsModel.forEach).have.been.called;
         expect(dimensionView.showDimensionItem).have.not.been.called;
-      })
+      });
 
   });
 
-  context('When user insert dimension elenment',function(){
+  context('When insert new dimension',function(){
 
-      it ('Will can insert a not empty data',function(){
-        
-        var dataResult = storeInserter.anyModel();
-            controllerInsert = dimensionController();
-            controllerInsert.descriptionInsert = dataResult.description;
-            controllerInsert.insertDescription()
+      beforeEach(function(){
+          ctrl.start();
+      })
+
+      it (' And description is filled',function(){
             
+        var dataResult = storeInserter.anyModel();           
+            ctrl.descriptionInsert = dataResult.description;
+            ctrl.insertDescription() ;
+            clock.tick(10);         
             expect(dimensionsModel.insert).have.been.called;
             expect(dimensionView.showDimensionItem).have.been.calledWith(dataResult,
-                                                                        controllerInsert.prepareToModifyDescription,
-                                                                        controllerInsert.deleteDimension);
+                                                                        ctrl.prepareToModifyDescription,
+                                                                        ctrl.deleteDimension);
             expect(dimensionView.clearInsertDescription).have.been.called;
 
       });
 
-      it ('Will not can insert an empty data ',function(){
-         var  controllerInsert = dimensionController();
-          controllerInsert.descriptionInsert = "    ";
-          controllerInsert.insertDescription();
+      it (' And description is empty ',function(){
+
+          ctrl.descriptionInsert = "    ";
+          ctrl.insertDescription();
+          clock.tick(10);
           expect(dimensionsModel.insert).have.not.been.called;
           expect(dimensionView.showDimensionItem).have.not.been.called;
       })
@@ -79,37 +84,43 @@ var dimensionController,dimensionView,dimensionsModel,storeInserter;
 
   context ('When modify dimensions ',function(){
 
-       it (' Will prepare to modify ',function(){
+       beforeEach(function(){
+          ctrl.start();
+          storeInserter.insertAny();
+       })
 
-           var  controllerModify = dimensionController();
-            controllerModify.prepareToModifyDescription("1");
+       it (' First pepare to modify ',function(){
+
+
+            ctrl.prepareToModifyDescription("1");
+            clock.tick(10);
             expect(dimensionsModel.modify).have.not.been.called;
             expect(dimensionView.prepareModify ).have.been.calledWith('save',
                                                                       "1",
-                                                                      controllerModify.modifyDescription);
+                                                                      ctrl.modifyDescription);
        });
 
-       it ('description will be modified',function(){
-                storeInserter.insertAny();
-            var dataResult = storeInserter.modelLastInserter(),
-                controllerModify = dimensionController();
+       it (' Second modify description ',function(){
+                            
+            var dataResult = storeInserter.modelLastInserter();
                 dataResult.description ='description2';
-                controllerModify.modifyDescription(dataResult.id,dataResult.description);
+                ctrl.modifyDescription(dataResult.id,dataResult.description);
+                clock.tick(10);
                 expect(dimensionsModel.modify).have.been.called;
                 expect(dimensionView.showDimensionItem).have.been.calledWith(dataResult,
-                                                                            controllerModify.prepareToModifyDescription,
-                                                                            controllerModify.deleteDimension);
-                
+                                                                            ctrl.prepareToModifyDescription,
+                                                                            ctrl.deleteDimension);             
                storeInserter.restoreStore();
        });
   });
 
   context('when delete dimension ',function(){
 
-      it(' call method delete view ',function(){
+      it(' Deelete dimension from model ',function(){
 
-        var controllerDelete = dimensionController();
-            controllerDelete.deleteDimension('id');
+            ctrl.start();
+            ctrl.deleteDimension('id');
+            clock.tick(10);
             expect(dimensionsModel.delete).have.been.called;
             expect(dimensionView.deleteDimension).have.been.calledWith('id');
 

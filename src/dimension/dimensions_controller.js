@@ -8,12 +8,12 @@ function DimensionsController(dimensionsView,dimensionsModel){
                                                        _that.deleteDimension);
                    }
             }
-    function start(){
-       dimensionsModel.forEach(showDimensionItem(_that.prepareToModifyDescription));
-    }
           
     this.dimensionsItems = dimensionsView.dimensionsItems;
 
+    this.start = function(){
+      dimensionsModel.forEach(showDimensionItem(_that.prepareToModifyDescription));
+    }
     this.insertDescription = function(){
         if (_that.descriptionInsert.trim()!='')
           dimensionsModel.insert(_that.descriptionInsert,
@@ -40,5 +40,4 @@ function DimensionsController(dimensionsView,dimensionsModel){
                                dimensionsView.deleteDimension(id);
                         });
     } 
-    start();
   }
