@@ -16,10 +16,10 @@ function ViewModel(states){
   	       this.description = text;
   		}
 
-  		this.buttomModify = function(typeButton,callback){			
+  		this.buttomModify = function(typeButton,callback){		
   			this.class = states[typeButton]['class'];
-  			this.modify = function(){
-  				         callback(_that.id,_that.description);
+  			this.modify = function(){                 
+  				         callback(_that.id,_that.description,states[typeButton]['states']);
   				     }
   		}
 

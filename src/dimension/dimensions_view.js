@@ -3,7 +3,6 @@ function DimensionView(viewModel){
         this.dimensionsItems = [];
         this.descriptionInsert = viewModel.descriptionInsert;
 
-
         function buildDimensionWidget(item,callbackModify,callbackDelete){
             var dimensionWidget = new viewModel.dimensionWidget();
                 dimensionWidget.descriptionText(item.type,item.description);
@@ -12,18 +11,9 @@ function DimensionView(viewModel){
                 dimensionWidget.buttonDelete(callbackDelete);
                 return dimensionWidget;
         }
-        
-        this.clearInsertDescription = function(){           
-              viewModel.clearInsertDescription();
-        }
 
-        this.showDimensionItem =function(item,callbackModify,callbackDelete){
-              if (_that.prepareModify(item.type,item.id,callbackModify)===false)
-                    _that.dimensionsItems.push(buildDimensionWidget(item,callbackModify,callbackDelete));
-        }
-
-        this.prepareModify = function(typeModify,idModify,callback){ 
-           return  this.dimensionsItems.reduce(function(modified,item){
+        function changeStateItem (typeModify,idModify,callback){ 
+           return  _that.dimensionsItems.reduce(function(modified,item){
                  if (item.id===idModify){
                     item.buttomModify(typeModify,callback);
                     item.descriptionText(typeModify,item.description);
@@ -31,6 +21,16 @@ function DimensionView(viewModel){
                   }  
                   return modified;
              },false); 
+        }
+        
+        this.clearInsertDescription = function(){           
+              viewModel.clearInsertDescription();
+        }
+
+        this.showDimensionItem =function(item,callbackModify,callbackDelete){
+              if (changeStateItem(item.type,item.id,callbackModify)===false)
+                    _that.dimensionsItems.push(buildDimensionWidget(item,callbackModify,callbackDelete));
+
         }
 
         this.deleteDimension=function(id){

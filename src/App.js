@@ -7,5 +7,6 @@ angular.module('ExampleList',['ngRoute','dimensions'])
 				controller: 'dimensions_controller',
 				controllerAs :'controller'
 			  });
-		  }]);
+		  }])
+
 

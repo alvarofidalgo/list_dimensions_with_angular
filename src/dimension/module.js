@@ -7,4 +7,4 @@ angular.module('dimensions')
     .service('store',Store)
     .service ('dimensionsModel',DimensionsModel)
     .controller('dimensions_controller',DimensionsController);
-  
+

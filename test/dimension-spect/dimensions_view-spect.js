@@ -32,7 +32,7 @@ describe('Dimensions view',function(){
 	    });
     })
 
-    context('when modify operation ',function(){
+  /*  context('when modify operation ',function(){
      var widget1,widget2,callbackModify;
       beforeEach(function(){
            widget1 = new viewModel.dimensionWidget();
@@ -59,7 +59,7 @@ describe('Dimensions view',function(){
             expect(dimensionsView.dimensionsItems.length).to.be.equal(2);
         })
 
-      });
+      });*/
 
    context('when show elements ',function(){
   

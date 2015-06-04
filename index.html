@@ -22,8 +22,8 @@
   <script src="src/app.js"></script> 
 
 </head>
-<body  ng-app="ExampleList" ng-controller="dimensions_controller as controller">
-
+ 
+<body   ng-app="ExampleList" ng-controller="dimensions_controller as controller">
    <h3>Dimension List with Angular</h3>
    <article >
    	  <input type="text" placeholder="insert description" ng-model="controller.descriptionInsert"> 
@@ -39,8 +39,8 @@
    	  	<span>DESCRIPTION</span>
    	  </li>
    </ul>
-
-   <ul ng-repeat="dimensionItem in controller.dimensionsItems">
+  
+   <ul  ng-repeat="dimensionItem in controller.dimensionsItems">
    	 <li>
    	 	<span>{{ dimensionItem.id }}<span>
    	 <li>

@@ -3,11 +3,21 @@
            return  {
                  modify:{ 
                           class:"glyphicon glyphicon-pencil",
-                          enabledDesription :false
+                          enabledDesription :false,
+                          states:{
+                               actualState:'modify',
+                               nextState : 'save'
+                          }
+                          
                         },
                  save:  {
                          class:"glyphicon glyphicon-save",
-                         enabledDesription:true
+                         enabledDesription:true,
+                         states:{
+                               actualState:'save',
+                               nextState : 'modify'
+                          }
+
                         }
                       };
                }

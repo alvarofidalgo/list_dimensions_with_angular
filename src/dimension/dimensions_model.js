@@ -1,9 +1,9 @@
-function DimensionItem(item){
-
+function DimensionItem(item,type){
+    type= type  || 'modify';
 	this.toDTO = function(){
 		return {id:item.value,
 		        description:item.description,
-		        type:"modify"
+		        type:type
 		        }
 	}
 }
@@ -11,24 +11,35 @@ function DimensionItem(item){
 function DimensionsModel(store){
 
     function parserToDimensionItem(callback){
+
     	  return function (dimensionElement){
     	  	       callback(new DimensionItem(dimensionElement));
     	  }
     }
 
-	return {forEach:function(callback){
+     
+
+	return {
+		    buildDimensionItem:function(id,description,type){
+               return new DimensionItem({
+               	                         value:id,
+               	                         description:description
+               	                         },type)
+	        },
+	        changeTypeItem:function(item,callback){
+                    callback(item);
+	        },
+		    forEach:function(callback){
                     store.get(parserToDimensionItem(callback));
 	        },
 	        insert:function(description,callback){
                     store.insert(description,parserToDimensionItem(callback));
 	        },
 	        modify:function(itemModify,callback){
-	        	  store.modify(itemModify,parserToDimensionItem(callback));
+	        	  store.modify(itemModify.id,itemModify.description,parserToDimensionItem(callback));
 	        },
 	        delete:function(id,callback){
 	        	store.delete(id,callback)
 	        }
-
 	   }
-
 }

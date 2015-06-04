@@ -1,27 +1,31 @@
-function Store(){
+function Store($timeout){
 
+          $timeout =  $timeout  || setTimeout;
            return {elements:[],
                    get:function(callback){
+
                     var that=this;
-                     setTimeout(function(){
+                    $timeout(function(){
                       for (var index=0;index<that.elements.length;index++)
                       	  callback(that.elements[index]);
-                      },1);
+
+                      },10);
                    },
                    insert:function(description,callback){
                     var that=this,
                         data = {value:''.concat(that.elements.length+1),description:description};
-                        setTimeout(function(){
+                        $timeout(function(){
                            that.elements.push(data);
                             callback(data);
                           },1);
                    },
-                   modify:function(item,callback){
+                   modify:function(id,description,callback){
                     var pos =0,that=this;
-                    setTimeout(function(){
+                    $timeout(function(){
                       for (var i=0;i<that.elements.length;i++)
-                        if (that.elements[i].value===item.value){
-                             that.elements[i]=item;
+                        if (that.elements[i].value===id){
+                             that.elements[i]={value:id,
+                                               description:description};
                              pos=i;
                           }
                       callback(that.elements[pos]);
@@ -29,7 +33,7 @@ function Store(){
                    },
                    delete:function(id,callback){
                      var that=this;
-                     setTimeout(function(){
+                     $timeout(function(){
                         newDimensions = that.elements.filter(function(element){
                                return element.value!=id
                             });
