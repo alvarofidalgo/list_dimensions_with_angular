@@ -6,10 +6,9 @@ function ViewModel(states){
    	      this.descriptionInsert="";
    }
 
+
    this.dimensionWidget = function(){
     var _that = this;
-       this.position;
-
    
   		this.descriptionText = function(typeStatus,text){	      
   	       this.readOnly = !states[typeStatus]['enabledDesription'];
